@@ -33,7 +33,7 @@ switch (action) {
 
 
 function invokeTwitter() {
-    twitterClient.get("statuses/user_timeline", params, function(error, tweets, response) {
+    client.get("statuses/user_timeline", params, function(error, tweets, response) {
         if (!error && response.statusCode == 200) {
             fs.writeFile('log.txt', "");
             for (var i = 0; i < tweets.length; i++) {
