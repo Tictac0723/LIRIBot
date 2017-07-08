@@ -14,12 +14,12 @@ var fs = require("fs");
 
 switch (action) {
     case "my-tweets":
-    console.log("here");
+        console.log("here");
         invokeTwitter();
         break;
 
     case "spotify-this-song":
-       invokeSpotify();
+        invokeSpotify();
         break;
 
     case "movie-this":
@@ -41,26 +41,24 @@ function invokeTwitter() {
                 console.log(tweets[i].created_at);
                 fs.appendFile('log.txt', ("Tweet: " + tweets[i].text + "Date & Time: " + tweets[i].created_at + "\r\n"))
             }
-        }
-        else {
+        } else {
             console.log(error);
         }
     })
 }
 
 function invokeSpotify() {
-    spotify.search({ type: 'track', query: value}, function(error, data){
-        if (error){
+    spotify.search({ type: 'track', query: value }, function(error, data) {
+        if (error) {
             return console.log("Error occurred: " + error);
-        }
-        else {
+        } else {
             fs.writeFile('log.txt', "");
             var firstObject = data.tracks.items[0];
             console.log(firstObject.artists[0].name);
             console.log(firstObject.name);
             console.log(firstObject.external_urls.spotify);
             console.log(firstObject.album.name);
-            fs.appendFile('log.txt', ("Song Title: " + firstObject.name + "\r\n" + "Artist Name: " + firstObject.artists[0].name  + "\r\n" + "Listen: " + firstObject.external_urls.spotify + "\r\n" + "Album Name: " + firstObject.album.name +  "\r\n"))
+            fs.appendFile('log.txt', ("Song Title: " + firstObject.name + "\r\n" + "Artist Name: " + firstObject.artists[0].name + "\r\n" + "Listen: " + firstObject.external_urls.spotify + "\r\n" + "Album Name: " + firstObject.album.name + "\r\n"))
 
         }
     })
@@ -68,6 +66,9 @@ function invokeSpotify() {
 
 
 function movie() {
+    if (value === undefined) {
+        var value = "Mr. Nobody"
+    }
     var queryUrl = "http://www.omdbapi.com/?t=" + value + "&y=&plot=short&apikey=40e9cece";
     console.log(queryUrl);
     request(queryUrl, function(error, response, body) {
@@ -84,13 +85,30 @@ function movie() {
     })
 }
 
-function random(){
-    fs.readFile("random.txt", "utf8", function(error, data){
-        if (error){
-            return console.log(error);
-        }
-        else {
+function random() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        if (error) {
+            return console.log("Whoops! There's a glitch in the Matrix!" + error);
+        } else {
             console.log(data);
+            var text = data.trim().split(",");
+            action = text[0];
+            value = text[1];
+            switch (action) {
+                case "my-tweets":
+                    console.log("here");
+                    invokeTwitter();
+                    break;
+
+                case "spotify-this-song":
+                    invokeSpotify();
+                    break;
+
+                case "movie-this":
+                    movie();
+                    break;
+            }
+
         }
     })
 }
