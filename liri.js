@@ -43,11 +43,14 @@ function invokeTwitter() {
             }
         } else {
             console.log(error);
-        }
+        }git 
     })
 }
 
 function invokeSpotify() {
+    if (value === undefined){
+        value = "The Sign Ace of Base";
+    }
     spotify.search({ type: 'track', query: value }, function(error, data) {
         if (error) {
             return console.log("Error occurred: " + error);
@@ -67,7 +70,7 @@ function invokeSpotify() {
 
 function movie() {
     if (value === undefined) {
-        var value = "Mr. Nobody"
+        value = "Mr. Nobody";
     }
     var queryUrl = "http://www.omdbapi.com/?t=" + value + "&y=&plot=short&apikey=40e9cece";
     console.log(queryUrl);
